@@ -18,6 +18,7 @@ class ValidateBedMesh:
         self.horizontal_move_z = config.getfloat('horizontal_move_z', 3.)
         
         self.probe = None
+        self.mcu_probe = None
         # probe settings are set to none, until they are available
         self.lift_speed, self.probe_x_offset, self.probe_y_offset, _ = \
             None, None, None, None
@@ -49,7 +50,12 @@ class ValidateBedMesh:
             config = self.printer.lookup_object('configfile')
             raise config.error(
                 "VALIDATE BED MESH requires [probe] to be defined")
-        self.mcu_probe = self.probe.mcu_probe
+        
+        probe_name = self.probe.get_status(None).get("name", "")
+        
+        # MCU probe only for probe_air
+        if probe_name.startswith("probe_air"):
+            self.mcu_probe = self.probe.mcu_probe
 
         self.gcode = self.printer.lookup_object('gcode')
         
@@ -72,9 +78,10 @@ class ValidateBedMesh:
         speed = self.speed if target_coordinates[2] == None else self.lift_speed
         toolhead.manual_move(target_coordinates, speed)
         toolhead.wait_moves()
-        toolhead.dwell(0.05)
-        self.mcu_probe.home_zero()
-        toolhead.dwell(0.05)
+        if self.mcu_probe:
+            toolhead.dwell(0.05)
+            self.mcu_probe.home_zero()
+            toolhead.dwell(0.05)
 
     def _validate_at(self, x, y, gcmd):
         # Interpolate Z from mesh
