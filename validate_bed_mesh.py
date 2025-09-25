@@ -101,7 +101,7 @@ class ValidateBedMesh:
         x = gcmd.get_float("X")
         y = gcmd.get_float("Y")
 
-        self._validate_at(self, x, y, gcmd) 
+        self._validate_at(x, y, gcmd) 
         gcmd.respond_info(f"Mesh Z at ({x:.2f}, {y:.2f}) = {self.mesh_z:.4f}mm)")
         gcmd.respond_info(f"Measured Z at ({x:.2f}, {y:.2f}) = {self.probed_z:.4f}mm)")
         gcmd.respond_info(f"Deviation = {self.deviation:.4f}mm")
