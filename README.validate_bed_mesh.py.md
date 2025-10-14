@@ -21,10 +21,14 @@ A safe Klipper extension that exposes bed mesh interpolation to GCode macros, al
 # Optional configuration parameters:
 # speed: Movement speed during validation (default: 50)
 # horizontal_move_z: Z height to move to between points to avoid probe triggering (default: 3)
+# deviation: Maximum allowed deviation in mm (default 0.05 mm)
+# remesh: Whether to remesh if deviation exceeded (default True)
 
 [validate_bed_mesh]
 speed: 50
 horizontal_move_z: 3
+deviation: 0.05
+remesh: True
 ```
 
 ## Usage
@@ -54,6 +58,9 @@ VALIDATE_BED_MESH [MAX_DEVIATION=0.05] [SAVE_CONFIG=FALSE]
 Parameters:
 - `MAX_DEVIATION`: Maximum allowed deviation before remeshing (default: 0.05mm)
 - `SAVE_CONFIG`: Whether to save the config after remeshing (default: FALSE)
+- `REMESH`: whether to remesh if deviation exceeded (default from config)
+- `MESH_MIN`: <x,y> - override mesh min point (default from bed_mesh config)
+- `MESH_MAX`: <x,y> - override mesh max point (default from bed_mesh config)
 
 ### Using in Macros
 
